@@ -1,0 +1,207 @@
+{
+	"test": [
+		{
+			"time": "2020-07-18 16:30",
+			"cross": "A",
+			"direction": "east",
+			"leftFlow": 5,
+			"straightFlow": 7
+		},
+		{
+			"time": "2020-07-12 19:30",
+			"cross": "A",
+			"direction": "east",
+			"leftFlow": 3,
+			"straightFlow": 10
+		},
+		{
+			"time": "2020-07-12 19:35",
+			"cross": "B",
+			"direction": "west",
+			"leftFlow": 4,
+			"straightFlow": 2
+		},
+		{
+			"time": "2020-07-14 19:30",
+			"cross": "A",
+			"direction": "west",
+			"leftFlow": 7,
+			"straightFlow": 1
+		},
+		{
+			"time": "2020-07-18 19:30",
+			"cross": "B",
+			"direction": "east",
+			"leftFlow": 6,
+			"straightFlow": 7
+		},
+		{
+			"time": "2020-07-19 08:30",
+			"cross": "B",
+			"direction": "east",
+			"leftFlow": 8,
+			"straightFlow": 12
+		},
+		{
+			"time": "2020-07-19 09:30",
+			"cross": "A",
+			"direction": "west",
+			"leftFlow": 6,
+			"straightFlow": 9
+		},
+		{
+			"time": "2020-07-19 10:30",
+			"cross": "B",
+			"direction": "west",
+			"leftFlow": 2,
+			"straightFlow": 5
+		},
+		{
+			"time": "2020-07-19 11:30",
+			"cross": "A",
+			"direction": "east",
+			"leftFlow": 3,
+			"straightFlow": 5
+		},
+		{
+			"time": "2020-07-19 12:30",
+			"cross": "B",
+			"direction": "west",
+			"leftFlow": 1,
+			"straightFlow": 4
+		},
+		{
+			"time": "2020-07-19 13:30",
+			"cross": "B",
+			"direction": "west",
+			"leftFlow": 1,
+			"straightFlow": 5
+		},
+		{
+			"time": "2020-07-19 14:30",
+			"cross": "A",
+			"direction": "east",
+			"leftFlow": 9,
+			"straightFlow": 2
+		},
+		{
+			"time": "2020-07-19 15:30",
+			"cross": "A",
+			"direction": "west",
+			"leftFlow": 6,
+			"straightFlow": 5
+		},
+		{
+			"time": "2020-07-19 16:30",
+			"cross": "B",
+			"direction": "east",
+			"leftFlow": 3,
+			"straightFlow": 5
+		},
+		{
+			"time": "2020-07-19 17:30",
+			"cross": "A",
+			"direction": "west",
+			"leftFlow": 8,
+			"straightFlow": 9
+		},
+		{
+			"time": "2020-07-19 18:30",
+			"cross": "A",
+			"direction": "east",
+			"leftFlow": 7,
+			"straightFlow": 9
+		},
+		{
+			"time": "2020-07-19 19:00",
+			"cross": "B",
+			"direction": "west",
+			"leftFlow": 7,
+			"straightFlow": 9
+		},
+		{
+			"time": "2020-07-19 19:05",
+			"cross": "A",
+			"direction": "east",
+			"leftFlow": 50,
+			"straightFlow": 2
+		},
+		{
+			"time": "2020-07-19 19:10",
+			"cross": "B",
+			"direction": "west",
+			"leftFlow": 8,
+			"straightFlow": 8
+		},
+		{
+			"time": "2020-07-19 19:15",
+			"cross": "A",
+			"direction": "east",
+			"leftFlow": 4,
+			"straightFlow": 19
+		},
+		{
+			"time": "2020-07-19 19:20",
+			"cross": "B",
+			"direction": "east",
+			"leftFlow": 7,
+			"straightFlow": 1
+		},
+		{
+			"time": "2020-07-19 19:25",
+			"cross": "B",
+			"direction": "west",
+			"leftFlow": 6,
+			"straightFlow": 9
+		},
+		{
+			"time": "2020-07-19 19:30",
+			"cross": "A",
+			"direction": "east",
+			"leftFlow": 3,
+			"straightFlow": 9
+		},
+		{
+			"time": "2020-07-19 19:35",
+			"cross": "A",
+			"direction": "west",
+			"leftFlow": 9,
+			"straightFlow": 3
+		},
+		{
+			"time": "2020-07-19 20:30",
+			"cross": "B",
+			"direction": "east",
+			"leftFlow": 7,
+			"straightFlow": 5
+		},
+		{
+			"time": "2020-07-19 21:30",
+			"cross": "A",
+			"direction": "east",
+			"leftFlow": 4,
+			"straightFlow": 6
+		},
+		{
+			"time": "2020-07-19 22:30",
+			"cross": "A",
+			"direction": "west",
+			"leftFlow": 2,
+			"straightFlow": 6
+		},
+		{
+			"time": "2020-07-19 23:30",
+			"cross": "B",
+			"direction": "west",
+			"leftFlow": 4,
+			"straightFlow": 3
+		},
+		{
+			"time": "2020-07-20 19:30",
+			"cross": "B",
+			"direction": "east",
+			"leftFlow": 9,
+			"straightFlow": 6
+		}
+	]
+}

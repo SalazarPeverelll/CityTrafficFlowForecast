@@ -1,0 +1,1198 @@
+<!doctype html>
+<!--author: 刘一鸣、杨翔
+create time: 2020-07-17
+update time: 2020-07-19-->
+
+
+<html>
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+	<head class="hidden-lg">
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet"/>
+	<link href="../quote/bootstrap-datetimepicker.min.css" rel="stylesheet">
+	
+	<script src="../quote/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/moment.js/2.22.0/moment-with-locales.js"></script>
+	<script src="http://cdn.staticfile.org/moment.js/2.24.0/moment.js"></script>
+	<!-- 引入 ECharts 文件 -->
+    <script src="https://cdn.bootcss.com/echarts/3.7.1/echarts.min.js"></script>
+	
+<meta charset="utf-8">
+<title>城市交通管理</title>
+<style type="text/css">
+	/*设置主题背景颜色*/
+	body{
+		background-color: #B1ADCE;
+		margin: 0px;
+		padding: 0px;
+	}
+	
+	/*标题div*/
+	.divtitle{
+		position: relative;
+		float: left;
+		width: 100%;
+		height: auto;
+		background-color: #2B3780;
+		margin-top: 0px;
+				padding-top: 15px;
+		padding-bottom: 15px;
+	}
+	
+	/*logo位置等设置*/
+	.divtitle>.logo{
+		float: left;
+		width: 15%;
+		height: auto;
+		display: inline-block;
+	}
+	
+	/*标题部分位置设置*/
+	.divtitle>.title{
+		float: left;
+		width: 20%;
+		text-align: center;
+		line-height: 50px;
+		height: auto;
+		color: aliceblue;
+		font-size: 18px;
+		letter-spacing: 0.5px;
+	}
+	
+	/*搜索框位置设置*/
+	.divtitle>.search{
+		float: left;
+		width: 30%;
+		text-align: center;
+		line-height: 50px;
+		height: 50px;
+		color: aliceblue;
+	}
+	
+	/*搜索框相关设置*/
+	.bar{}
+	
+	/*搜索框主体*/
+	.bar form{
+		position: relative;
+        width: 100%;
+        margin: 0 auto;
+		height: 100%;
+	}
+	
+	/*输入框设置*/
+	.bar input{
+		border: none;
+        outline: none;
+		width: 80%;
+        height: 80%;
+        padding-left: 0%;
+		background: rgba(0,0,0,-1);
+		border: 2px solid #F7F7F7;
+		border-radius: 10px;
+		text-align: center;
+	}
+	
+	.bar input: focus{
+		border-color: #311c24;
+	}
+	
+	/*搜索按钮设置*/
+	.bar button {
+		border: none;
+        outline: none;
+		height: 60%;
+        width: 30px;
+        cursor: pointer;
+        position: absolute;
+		line-height: 50px;
+        top: 20%;
+		right: 12%;
+		border-radius:5px;
+		background-color: transparent;
+		background-image: url(../ui/searchui.png);
+		background-repeat: no-repeat;
+		background-size: 100%, 30px;
+     }
+	
+    .bar button:before {
+        content: "\f002";
+        font-family: FontAwesome;
+        font-size: 0px;
+        color: #F9F0DA;
+     }
+	
+	/*右侧信息栏*/
+	.divtitle>.Info{
+		float:right;
+		width: 35%;
+		height: 50px;
+		display: inline-block;
+	}
+	
+	/*地球ui图标*/
+	.divtitle>.Info>.ui{
+		float: left;
+		width: 40%;
+		text-align: right;
+		line-height: 50px;
+		height: 50px;
+		color: aliceblue;
+	}
+	
+	/*页面转换按钮*/
+	.divtitle>.Info>.info{
+		float: left;
+		width: 50%;
+		margin-left: 5%;
+		text-align: center;
+		line-height: 50px;
+		height: 50px;
+		color: aliceblue;
+	}
+	
+	.switch{
+        float: right;
+		margin-right: 10%;
+        width: 60%;
+        height: 100%;
+    }
+    .switch li{
+        clear: both;
+		width: 100%;
+        line-height: 49px;
+        list-style: none;
+    }
+    .switch li input{
+        display: none;
+    }
+    .switch li label{
+        width: 50px;
+        height: 28px;
+        margin-top: 11px;
+        background-color: #5af569;
+        box-sizing: border-box;
+        border-radius: 15px;
+        float: right;
+		margin-right: 10%;
+        box-shadow: 0 1px 2px rgba(247, 246, 123, 0.1) inset;
+    }
+    .switch li label em{
+        width: 25px;
+        height: 26px;
+        margin: 1px;
+        background-color: white;
+        border-radius: 14px;
+        float: right;
+    }
+    .switch input:checked+label{
+        background-color: #cccccc;
+    }
+    .switch input:checked+label em{
+        float: left;
+    }
+	
+	/*主体界面设置*/
+	/*左侧交通信息管理界面设置*/
+	.parent {
+		position: relative;
+		float: left;
+        width: 50%;
+        height: 90%;
+		margin:20px 0 0 13%;
+    }
+	
+	/*右侧交通管理贴士界面设置*/
+	.parent2 {
+		position: relative;
+		float: right;
+        width: 20%;
+        height: 90%;
+		margin: 20px 13% 0 0;
+    }
+	
+	/*div1（详细交通流量预报）*/
+	.parent>.div1{
+		float: left;
+		width: 100%;
+		height: auto;
+		margin-top: 2%;
+		margin-bottom: 2%;
+		margin-left: 0px;
+		margin-right: 0px;
+		background: #FFFFFF;
+		border-radius: 10px;
+		border-color: #BBBBBB;
+		box-shadow: 3px 2px 3px #888888;
+	}
+	
+	/*box1（详细交通流量预报）*/
+	.parent>.div1>.box1{
+		width: 100%;
+		height: 300px;
+		overflow-y: scroll;
+	}
+	
+	/*box2（街道选择）*/
+	.parent>.div1>.box2{
+		width: 100%;
+		height: auto;
+	}
+	
+	/*返回指定时间段内的车流量信息表*/
+	.parent>.div1>.box1>.divtab {
+		position: relative;
+		float: left;
+		width: 80%;
+		height: auto;
+		margin: 0 5% 5% 5%;
+    }
+	
+	tr {
+		border-bottom: 1px solid #838181;
+    }
+	
+	/*div2（拥堵趋势图表）*/
+	.parent>.div2{
+		float: left;
+		width: 100%;
+		height: auto;
+		margin-top: 2%;
+		margin-bottom: 2%;
+		margin-left: 0px;
+		margin-right: 0px;
+		background: #FFFFFF;
+		border-radius: 10px;
+		border-color: #BBBBBB;
+		box-shadow: 3px 2px 3px #888888;
+	}
+	
+	/*div3（未来一周拥堵情况预测）*/
+	.parent>.div3{
+		float: left;
+		width: 100%;
+		height: auto;
+		margin-top: 2%;
+		margin-bottom: 2%;
+		margin-left: 0px;
+		margin-right: 0px;
+		background: #FFFFFF;
+		border-radius: 10px;
+		border-color: #BBBBBB;
+		box-shadow: 3px 2px 3px #888888;
+	}
+	
+	/*div4（地图状况一览）*/
+	.parent>.div4{
+		float: left;
+		width: 100%;
+		height: auto;
+		margin-top: 2%;
+		margin-bottom: 2%;
+		margin-left: 0px;
+		margin-right: 0px;
+		background: #FFFFFF;
+		border-radius: 10px;
+		border-color: #BBBBBB;
+		box-shadow: 3px 2px 3px #888888;
+	}
+	
+	/*div5（天气预报）*/
+	.parent2>.div5{
+		position: relative;
+		float: right;
+		width: 100%;
+		height: 320px;
+		margin: 60px 0 5% 0%;
+		align-items: center;
+		background: #FFFFFF;
+		border-radius: 10px;
+		border-color: #BBBBBB;
+		box-shadow: 3px 2px 3px #888888;
+	}
+	
+	/*天气预报frame设置*/
+	.parent2>.div5>.weather{
+		position: relative;
+		height: 100%;
+		width: 100%;
+		padding: 15px 0 0 0;
+		border-radius: 10px;
+	}
+	
+	/*div6（交通管理小贴士）*/
+	.parent2>.div6{
+		position: relative;
+		float: right;
+		width: 100%;
+		height: auto;
+		margin: 5% 0 5% 0;
+		background: #FFFFFF;
+		border-radius: 10px;
+		border-color: #BBBBBB;
+		box-shadow: 3px 2px 3px #888888;
+	}
+	
+	/*小贴士图片*/
+	.parent2>.div6>.pic{
+		float: left;
+		width: 80%;
+		margin: 10px 10%;
+		height: auto;
+	}
+	
+	/*小贴士字体及缩进设置*/
+	.parent2>.div6>.tips1{
+		float: left;
+		width: 95%;
+		margin: 10px 2.5% 0;
+		font-size: 30px;
+		/*text-indent: 2em;*/
+	}
+	.parent2>.div6>.tips2{
+		float: left;
+		width: 95%;
+		margin: 0 2.5% 20px;
+		font-size: 30px;
+	}
+	
+	/*按钮颜色大小等初始设置*/
+	.button {
+		width: 10%;
+		margin-bottom: 5px;
+    	text-align: center;
+    	text-decoration: none;
+    	display: inline-block;
+    	font-size: 14px;
+    	cursor: pointer;
+    	-webkit-transition-duration: 0.4s; /* Safari */
+    	transition-duration: 0.4s;
+		background-color: white; 
+    	color: black; 
+    	border: 1px solid #B1ADCE;
+		float: left;
+		transition: all 0.4s;
+	}
+	/*鼠标悬停阴影*/
+	.button:hover {
+    	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+		background-color: #B1ADCE;
+    	color: white;
+	}
+	
+	.button1 {
+		width: 10%;
+		margin-left: 28%;
+		margin-bottom: 5px;
+    	text-align: center;
+    	text-decoration: none;
+    	display: inline-block;
+    	font-size: 14px;
+    	cursor: pointer;
+    	-webkit-transition-duration: 0.4s; /* Safari */
+    	transition-duration: 0.4s;
+		background-color: white; 
+    	color: black; 
+    	border: 1px solid #B1ADCE;
+		float: left;
+		transition: all 0.4s;
+	}
+	/*鼠标悬停阴影*/
+	.button1:hover {
+    	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+		background-color: #B1ADCE;
+    	color: white;
+	}
+	
+	.button2 {
+		width: 100%;
+		height: auto;
+    	text-align: center;
+    	text-decoration: none;
+    	display: inline-block;
+    	cursor: pointer;
+    	-webkit-transition-duration: 0.4s; /* Safari */
+    	transition-duration: 0.4s;
+		background-color: transparent;
+    	color: black; 
+		float: left;
+		transition: all 0.4s;
+		border: none;
+	}
+</style>
+</head>
+
+<body>
+	<!--页面上方标题栏设置-->
+	<div class="divtitle">
+		<!--logo设置-->
+		<div id="logo" class="logo" align="right">
+			<img src="../background/logo.jpg" alt="logo" width="50" height="50" class="img-circle img-responsive">
+		</div>
+		<!--title设置-->
+	  	<div class="title">
+			Traffic Predict Management
+		</div>
+		<!--搜索框-->
+		<div class="search bar">
+			<form action="#" method="post">
+				<input type="text" name="condition" placeholder="Search City or Zip Code" height="20px" style="color: aliceblue" />
+				<button type="submit"></button>
+			</form>
+		</div>
+		<!--右侧图标国家等信息设置-->
+		<div class="Info">
+			<div class="ui">
+				<img src="../ui/titleui.png" alt="titleui" width="20" height="20" class="img-circle">
+				CN
+			</div>
+			<div class="info">
+				<ul class="switch">
+    				<li>
+       					<input type="checkbox" name="aaa" id="a1">
+        				管理页
+        				<label for="a1"><em></em></label>
+    				</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<!--主体部分左侧-->
+	<div class="parent">
+		<div class="div1">
+			<h1 id="flowDetail" align="center">详细路况预报——华为大厦</h1>
+			<br>
+			<div class="box1">
+				<div align="center" class="divtab">
+					<!--折叠表1-->
+					<table>
+					<thead>
+						<tr style="border-bottom:3px solid #838181">
+        					<td width="20%" align="center" id="time1">时间</td>
+							<!--<td width="10%" align="center"><img src="../ui/left.png" alt="left" width="50%" id="left"></td>-->
+        					<td width="20%" align="center">左转</td>
+							<!--<td width="10%" align="center"><img src="../ui/straight.png" alt="straight" width="50%" id="straight"></td>-->
+							<td width="20%" align="center">直行</td>
+        					<td width="20%" align="center" id="sum1">总量：</td>
+							<td width="10%" align="center" style="border-bottom: none">
+								<button id="folder1" class="button2" value="0">
+									<img src="../ui/fold.png" alt="fold1" width="50%" id="fold1">
+								</button>
+							</td>
+    					</tr>
+					</thead>
+					<tbody id="contain1" align="center" style="display: none"></tbody>
+					</table>
+					
+					<!--折叠表2-->
+					<table>
+					<thead>
+						<tr style="border-bottom:3px solid #838181">
+        					<td width="20%" align="center" id="time2">时间</td>
+							<!--<td width="10%" align="center"><img src="../ui/left.png" alt="left" width="50%" id="left"></td>-->
+        					<td width="20%" align="center">左转</td>
+							<!--<td width="10%" align="center"><img src="../ui/straight.png" alt="straight" width="50%" id="straight"></td>-->
+							<td width="20%" align="center">直行</td>
+        					<td width="20%" align="center" id="sum2">总量：</td>
+							<td width="10%" align="center" style="border-bottom: none">
+								<button id="folder2" class="button2" value="0">
+									<img src="../ui/fold.png" alt="fold2" width="50%" id="fold2">
+								</button>
+							</td>
+    					</tr>
+					</thead>
+					<tbody id="contain2" align="center" style="display: none"></tbody>
+					</table>
+					
+					<!--折叠表3-->
+					<table>
+					<thead>
+						<tr style="border-bottom:3px solid #838181">
+        					<td width="20%" align="center" id="time3">时间</td>
+							<!--<td width="10%" align="center"><img src="../ui/left.png" alt="left" width="50%" id="left"></td>-->
+        					<td width="20%" align="center">左转</td>
+							<!--<td width="10%" align="center"><img src="../ui/straight.png" alt="straight" width="50%" id="straight"></td>-->
+							<td width="20%" align="center">直行</td>
+        					<td width="20%" align="center" id="sum3">总量：</td>
+							<td width="10%" align="center" style="border-bottom: none">
+								<button id="folder3" class="button2" value="0">
+									<img src="../ui/fold.png" alt="fold3" width="50%" id="fold3">
+								</button>
+							</td>
+    					</tr>
+					</thead>
+					<tbody id="contain3" align="center" style="display: none"></tbody>
+					</table>
+					
+					<!--折叠表4-->
+					<table>
+					<thead>
+						<tr style="border-bottom:3px solid #838181">
+        					<td width="20%" align="center" id="time4">时间</td>
+							<!--<td width="10%" align="center"><img src="../ui/left.png" alt="left" width="50%" id="left"></td>-->
+        					<td width="20%" align="center">左转</td>
+							<!--<td width="10%" align="center"><img src="../ui/straight.png" alt="straight" width="50%" id="straight"></td>-->
+							<td width="20%" align="center">直行</td>
+        					<td width="20%" align="center" id="sum4">总量：</td>
+							<td width="10%" align="center" style="border-bottom: none">
+								<button id="folder4" class="button2" value="0">
+									<img src="../ui/fold.png" alt="fol4d" width="50%" id="fold4">
+								</button>
+							</td>
+    					</tr>
+					</thead>
+					<tbody id="contain4" align="center" style="display: none"></tbody>
+					</table>
+				</div>
+			</div>
+			<!--选择地址按钮，根据地址得出不同的数据-->
+			<div class="box2">
+				<button class="button1" id="1" name="road1" onClick="changeColor(1)" value="wuhe_zhangheng">五和大道</button>
+				<button class="button" id="2" name="road2" onClick="changeColor(2)" value="chongzhi_jiaxian">冲之大道</button>
+				<button class="button" id="3" name="road3" onClick="changeColor(3)" value="wuhe_jiaxian">稼先路</button>
+				<button class="button" id="4" name="road4" onClick="changeColor(4)" value="chongzhi_longping">隆平路</button>
+			</div>
+		</div>
+		<!--拥堵趋势柱状图-->
+		<div class="div2">
+			<h1 id="jamPredict" align="center">拥堵趋势预测</h1>
+			<div id = "bar" style="width: 600px; height:400px; margin: 0 auto;"></div>
+		</div>
+		<!--拥堵趋势热区表-->
+		<div class="div3">
+			<h1 id="weekjamPredict" align="center">未来一周每小时拥堵趋势预测</h1>
+			<div id = "heat" style="width: 600px; height:400px;margin: 0 auto;"></div>
+		</div>
+		<div class="div4">
+			<img src="../background/map.png" alt="map" width="100%">
+		</div>
+	</div>
+	
+	<!--主体部分右侧-->
+	<div class="parent2">
+		
+		<!--div6（交通小贴士）-->
+		<div class="div6">
+			<h1 align="center" id="div6Title">交通管理小贴士</h1>
+			<!--预设的贴士，之后按照需求进行更换-->
+			<div class="pic"><img src="../tips/tip2.jpg" alt="tipPic" style="width: 100%"></div>
+			<p id="tips" class="tips1" align="center">预计两小时后</p>
+			<p class="tips2" align="center">冲之大道迎来晚高峰</p>
+		</div>
+		
+		<!--div7（天气预报）-->
+		<div class="div5">
+			<iframe scrolling="no" frameborder="0" allowtransparency="true" class="weather" src="http://i.tianqi.com/index.php?c=code&id=55&icon=2&num=3&py=shenzhen" align="middle">
+			</iframe>
+		</div>
+	</div>
+	
+<script>
+	jQuery.support.cors = true;
+	
+	$(function(){
+		setInterval(function(){
+			//获取当前的时间信息
+			var date = new Date();
+			var year1 = date.getFullYear();
+			var mon1 = date.getMonth() + 1;  //获取月份信息
+			var day1 = date.getDate();  //获取天信息
+			var h1 = date.getHours();  //获取小时信息
+			var min1 = date.getMinutes();
+			var hr1 = moment(date).clone().set({minute:0, second:0, millisecond:0});
+			var ts1 = Date.parse(hr1).toString(); 
+			//console.log(ts1);
+			var t1 = moment(date).clone().set({hour:0, minute:0, second:0, millisecond:0});
+			var tsd1 = Date.parse(t1).toString(); 
+			
+			//设定固定时间段以获取交通状况总览数据
+			var standard = moment().startOf('day');  //获取今日零点时刻作为标准
+			//console.log(standard);
+			//标准转化为早八作为早上数据起始点
+			var ams = moment(standard).add(8, 'hours');
+			//console.log(ams);
+			//中午十二点作为上午截止点和下午的起始点
+			var noon = moment(standard).add(12, 'hours');
+			//傍晚六点为下午的截止点
+			var pme = moment(standard).add(18, 'hours');
+			//获取今日23：59：59作为晚上数据截止点
+			var evend = moment().endOf('day');
+			//console.log(evend);
+					
+			//获取第二小时信息
+			var hour2 = date.setHours(date.getHours() + 1);
+			hour2 = new Date(hour2);
+			var h2 = hour2.getHours();
+			var hr2 = moment(hour2).clone().set({minute:0, second:0, millisecond:0});
+			var ts2 = Date.parse(hr2).toString();
+			//console.log(ts2);
+			
+			//获取第三小时信息
+			var hour3 = date.setHours(date.getHours() + 1);
+			hour3 = new Date(hour3);
+			var h3 = hour3.getHours();
+			var hr3 = moment(hour3).clone().set({minute:0, second:0, millisecond:0});
+			var ts3 = Date.parse(hr3).toString();
+			
+			//获取第四小时信息
+			var hour4 = date.setHours(date.getHours() + 1);
+			hour4 = new Date(hour4);
+			var h4 = hour4.getHours();
+			var hr4 = moment(hour4).clone().set({minute:0, second:0, millisecond:0});
+			var ts4 = Date.parse(hr4).toString();
+			
+			//获取第五小时信息作为时间边界
+			var hour5 = date.setHours(date.getHours() + 1);
+			hour5 = new Date(hour5);
+			var h5 = hour5.getHours();
+			var hr5 = moment(hour5).clone().set({minute:0, second:0, millisecond:0});
+			var ts5 = Date.parse(hr5).toString(); 
+			
+			//清楚获取未来时间造成的影响
+			var hour0 = date.setHours(date.getHours() - 4);
+			hour0 = new Date(hour0);
+			var h0 = hour0.getHours();
+			
+			//获取第二天的信息（月份、天数）
+			var date2 = date.setDate(date.getDate() + 1);
+			date2 = new Date(date2);
+			var year2 = date.getFullYear();
+			var mon2 = date2.getMonth() + 1;
+			var day2 = date2.getDate();
+			var t2 = moment(date).clone().set({hour:0, minute:0, second:0, millisecond:0});
+			var tsd2 = Date.parse(t2).toString(); 
+			
+			//获取第三天的信息（月份、天数）
+			var date3 = date.setDate(date.getDate() + 1);
+			date3 = new Date(date3);
+			var year3 = date.getFullYear();
+			var mon3 = date3.getMonth() + 1;
+			var day3 = date3.getDate();
+			var t3 = moment(date).clone().set({hour:0, minute:0, second:0, millisecond:0});
+			var tsd3 = Date.parse(t3).toString(); 
+			
+			//获取第四天的信息（月份、天数）
+			var date4 = date.setDate(date.getDate() + 1);
+			date4 = new Date(date4);
+			var year4 = date.getFullYear();
+			var mon4 = date4.getMonth() + 1;
+			var day4 = date4.getDate();
+			var t4 = moment(date).clone().set({hour:0, minute:0, second:0, millisecond:0});
+			var tsd4 = Date.parse(t4).toString(); 
+			
+			//获取第五天的信息作为时间边界
+			var date5 = date.setDate(date.getDate() + 1);
+			date5 = new Date(date5);
+			var mon5 = date5.getMonth() + 1;
+			var day5 = date5.getDate();
+			var t5 = moment(date).clone().set({hour:0, minute:0, second:0, millisecond:0});
+			var tsd5 = Date.parse(t5).toString(); 
+			
+			//将常用地近日交通状况时刻设置为当前时刻开始的四天时间信息
+			document.getElementById('time1').innerHTML= year1 + "-" + mon1 + "-" + day1;
+			document.getElementById('time2').innerHTML= year2 + "-" + mon2 + "-" + day2;
+			document.getElementById('time3').innerHTML= year3 + "-" + mon3 + "-" + day3;
+			document.getElementById('time4').innerHTML= year4 + "-" + mon4 + "-" + day4;
+			
+			//获取testdata中路况数据，用flowData数组存储
+			$.getJSON("../data/testdata.json", function(flowData){
+				
+				//获取五和大道数据并写入折叠表中
+				$("#1").click(function (){
+					var crossStamp = [];
+					for(i = 0; i < flowData.length; i++){
+						if (flowData[i].cross == "wuhe_zhangheng"){
+							crossStamp.push({leftFlow:parseInt(flowData[i].leftFlow),straightFlow:parseInt(flowData[i].straightFlow),
+											number:parseInt(flowData[i].number)});	
+						}
+					}
+					//console.log(crossStamp);
+					//读取所选取的时间段内的数据并动态生成表格
+					var sum1 = 0;
+					var str = '';
+					for (var i = 0; i < 12; i++){
+						str += '<tr>';
+						str += `<td>${2*i + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum1 += crossStamp[i].number;
+					}
+					document.getElementById('sum1').innerHTML= "总量:" + sum1;
+					contain1.innerHTML = str;
+				
+					//读取所选取的时间段内的数据并动态生成表格
+					var sum2 = 0;
+					var str = '';
+					for (var i = 12; i < 24; i++){
+						str += '<tr>';
+						str += `<td>${2*(i - 12) + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum2 += crossStamp[i].number;
+					}
+					document.getElementById('sum2').innerHTML= "总量:" + sum2;
+					contain2.innerHTML = str;
+				
+					var sum3 = 0;
+					var str = '';
+					for (var i = 24; i < 36; i++){
+						str += '<tr>';
+						str += `<td>${2*i + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum3 += crossStamp[i].number;
+					}
+					document.getElementById('sum3').innerHTML= "总量:" + sum3;
+					contain3.innerHTML = str;
+				
+					var sum4 = 0;
+					var str = '';
+					for (var i = 36; i < 48; i++){
+						str += '<tr>';
+						str += `<td>${2*(i - 12) + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum4 += crossStamp[i].number;
+					}
+					document.getElementById('sum4').innerHTML= "总量:" + sum4;
+					contain4.innerHTML = str;
+				});	
+				
+				//获取冲之大道数据并写入折叠表中
+				$("#2").click(function (){
+					var crossStamp = [];
+					for(i = 0; i < flowData.length; i++){
+						if (flowData[i].cross == "chongzhi_jiaxian"){
+							crossStamp.push({leftFlow:parseInt(flowData[i].leftFlow),straightFlow:parseInt(flowData[i].straightFlow),
+											number:parseInt(flowData[i].number)});	
+						}
+					}
+					//console.log(crossStamp);
+					//读取所选取的时间段内的数据并动态生成表格
+					var sum1 = 0;
+					var str = '';
+					for (var i = 0; i < 12; i++){
+						str += '<tr>';
+						str += `<td>${2*i + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum1 += crossStamp[i].number;
+					}
+					document.getElementById('sum1').innerHTML= "总量:" + sum1;
+					contain1.innerHTML = str;
+				
+					//读取所选取的时间段内的数据并动态生成表格
+					var sum2 = 0;
+					var str = '';
+					for (var i = 12; i < 24; i++){
+						str += '<tr>';
+						str += `<td>${2*(i - 12) + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum2 += crossStamp[i].number;
+					}
+					document.getElementById('sum2').innerHTML= "总量:" + sum2;
+					contain2.innerHTML = str;
+				
+					var sum3 = 0;
+					var str = '';
+					for (var i = 24; i < 36; i++){
+						str += '<tr>';
+						str += `<td>${2*i + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum3 += crossStamp[i].number;
+					}
+					document.getElementById('sum3').innerHTML= "总量:" + sum3;
+					contain3.innerHTML = str;
+				
+					var sum4 = 0;
+					var str = '';
+					for (var i = 36; i < 48; i++){
+						str += '<tr>';
+						str += `<td>${2*(i - 12) + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum4 += crossStamp[i].number;
+					}
+					document.getElementById('sum4').innerHTML= "总量:" + sum4;
+					contain4.innerHTML = str;
+				});	
+				
+				//获取稼先路数据并写入折叠表中
+				$("#3").click(function (){
+					var crossStamp = [];
+					for(i = 0; i < flowData.length; i++){
+						if (flowData[i].cross == "wuhe_jiaxian"){
+							crossStamp.push({leftFlow:parseInt(flowData[i].leftFlow),straightFlow:parseInt(flowData[i].straightFlow),
+											number:parseInt(flowData[i].number)});	
+						}
+					}
+					//console.log(crossStamp);
+					//读取所选取的时间段内的数据并动态生成表格
+					var sum1 = 0;
+					var str = '';
+					for (var i = 0; i < 12; i++){
+						str += '<tr>';
+						str += `<td>${2*i + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum1 += crossStamp[i].number;
+					}
+					document.getElementById('sum1').innerHTML= "总量:" + sum1;
+					contain1.innerHTML = str;
+				
+					//读取所选取的时间段内的数据并动态生成表格
+					var sum2 = 0;
+					var str = '';
+					for (var i = 12; i < 24; i++){
+						str += '<tr>';
+						str += `<td>${2*(i - 12) + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum2 += crossStamp[i].number;
+					}
+					document.getElementById('sum2').innerHTML= "总量:" + sum2;
+					contain2.innerHTML = str;
+				
+					var sum3 = 0;
+					var str = '';
+					for (var i = 24; i < 36; i++){
+						str += '<tr>';
+						str += `<td>${2*i + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum3 += crossStamp[i].number;
+					}
+					document.getElementById('sum3').innerHTML= "总量:" + sum3;
+					contain3.innerHTML = str;
+				
+					var sum4 = 0;
+					var str = '';
+					for (var i = 36; i < 48; i++){
+						str += '<tr>';
+						str += `<td>${2*(i - 12) + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum4 += crossStamp[i].number;
+					}
+					document.getElementById('sum4').innerHTML= "总量:" + sum4;
+					contain4.innerHTML = str;
+				});
+				
+				//获取隆平路数据并写入折叠表中
+				$("#4").click(function (){
+					var crossStamp = [];
+					for(i = 0; i < flowData.length; i++){
+						if (flowData[i].cross == "chongzhi_longping"){
+							crossStamp.push({leftFlow:parseInt(flowData[i].leftFlow),straightFlow:parseInt(flowData[i].straightFlow),
+											number:parseInt(flowData[i].number)});	
+						}
+					}
+					//console.log(crossStamp);
+					//读取所选取的时间段内的数据并动态生成表格
+					var sum1 = 0;
+					var str = '';
+					for (var i = 0; i < 12; i++){
+						str += '<tr>';
+						str += `<td>${2*i + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum1 += crossStamp[i].number;
+					}
+					document.getElementById('sum1').innerHTML= "总量:" + sum1;
+					contain1.innerHTML = str;
+				
+					//读取所选取的时间段内的数据并动态生成表格
+					var sum2 = 0;
+					var str = '';
+					for (var i = 12; i < 24; i++){
+						str += '<tr>';
+						str += `<td>${2*(i - 12) + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum2 += crossStamp[i].number;
+					}
+					document.getElementById('sum2').innerHTML= "总量:" + sum2;
+					contain2.innerHTML = str;
+				
+					var sum3 = 0;
+					var str = '';
+					for (var i = 24; i < 36; i++){
+						str += '<tr>';
+						str += `<td>${2*i + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum3 += crossStamp[i].number;
+					}
+					document.getElementById('sum3').innerHTML= "总量:" + sum3;
+					contain3.innerHTML = str;
+				
+					var sum4 = 0;
+					var str = '';
+					for (var i = 36; i < 48; i++){
+						str += '<tr>';
+						str += `<td>${2*(i - 12) + ":00"}</td>`;
+						str += `<td>${crossStamp[i].leftFlow}</td>`;
+						str += `<td>${crossStamp[i].straightFlow}</td>`;
+						str += `<td>${crossStamp[i].number}</td>`;
+						str += '</tr>';
+						sum4 += crossStamp[i].number;
+					}
+					document.getElementById('sum4').innerHTML= "总量:" + sum4;
+					contain4.innerHTML = str;
+				});
+				
+			})
+		},1000)
+		
+		//启动折叠或展开，并更换按钮图片
+		$("#folder1").click(function (){
+			if (document.getElementById('folder1').value == "1"){
+				document.getElementById('contain1').style.display = "none";
+				document.getElementById('fold1').src = "../ui/fold.png";
+				document.getElementById('folder1').value = "0";
+			}
+			else{
+				document.getElementById('contain1').style.display = "";
+				document.getElementById('fold1').src = "../ui/expand.png";
+				document.getElementById('folder1').value = "1";
+			}
+		})
+		
+		$("#folder2").click(function (){
+			if (document.getElementById('folder2').value == "1"){
+				document.getElementById('contain2').style.display = "none";
+				document.getElementById('fold2').src = "../ui/fold.png";
+				document.getElementById('folder2').value = "0";
+			}
+			else{
+				document.getElementById('contain2').style.display = "";
+				document.getElementById('fold2').src = "../ui/expand.png";
+				document.getElementById('folder2').value = "1";
+			}
+		})
+		
+		$("#folder3").click(function (){
+			if (document.getElementById('folder3').value == "1"){
+				document.getElementById('contain3').style.display = "none";
+				document.getElementById('fold3').src = "../ui/fold.png";
+				document.getElementById('folder3').value = "0";
+			}
+			else{
+				document.getElementById('contain3').style.display = "";
+				document.getElementById('fold3').src = "../ui/expand.png";
+				document.getElementById('folder3').value = "1";
+			}
+		})
+		
+		$("#folder4").click(function (){
+			if (document.getElementById('folder4').value == "1"){
+				document.getElementById('contain4').style.display = "none";
+				document.getElementById('fold4').src = "../ui/fold.png";
+				document.getElementById('folder4').value = "0";
+			}
+			else{
+				document.getElementById('contain4').style.display = "";
+				document.getElementById('fold4').src = "../ui/expand.png";
+				document.getElementById('folder4').value = "1";
+			}
+		})
+	})
+	
+	
+	//切换页面
+	$(document).ready(function(){
+		$("#a1").on('click',function(){
+			if ($("#a1").is(':checked')){
+				window.location.href = 'TrafficFlowPredict.html';
+			}
+			else{
+				console.log("OFF");
+			}
+		});	
+	});
+	
+	//点击时更换按钮颜色
+	function changeColor(a) {
+		//获取当前按钮信息
+        var bta = document.getElementById(a);
+		//var val = document.getElementById(a).value;
+		//console.log(val);
+		bta.style.background = "#B1ADCE";
+		bta.style.color = "#FFFFFF";
+		//将当前按钮的文字信息赋给标题
+		var buttonValue= document.getElementById(a).innerHTML;
+		document.getElementById('flowDetail').innerHTML = "详细路况预报——华为大厦" + buttonValue;
+		//判断将非该按钮的其他按钮恢复默认样式
+		for (var b = 1; b <= 4; b++){
+			if(b != a){
+				var bta2 = document.getElementById(b);
+				bta2.style.background = "#FFFFFF";
+				bta2.style.color = "#000000";
+			}
+		}	
+    }
+	
+	//柱状图
+	var myChart = echarts.init(document.getElementById('bar'));
+
+        var option1 = {
+            visualMap: [
+        { // 第一个 visualMap 组件
+            min:0,
+            max:300,
+            orient: 'horizontal',
+            type: 'piecewise', // 定义为连续型 visualMap
+            color: ['#DC143C', '#FFD700', '#00FA9A'],
+            pieces:[
+                {gt: 0, lte: 100, label: '顺畅'},
+                {gt: 100, lte: 200, label:'稍微拥塞'},
+                {gt: 200, lte: 300, label:'拥塞'},
+            ],
+            left:'center',
+            top:'top',
+            itemWidth:100,
+            itemHeight: 10,
+            veticle:"horizontal"
+        }],
+            dataZoom:{
+                type:"slider"
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b0}<br />{c0}'
+            },
+            xAxis: {
+                type: 'category',
+                data: ['7/14', '7/15', '7/16', '7/17', '7/18', '7/19', '7/20']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                itemStyle:{
+                    normal:{
+                      ///  通过params.value拿到对应的data里面的数据
+                      color:function(params){
+                        if(params.value >0 && params.value <99){
+                          return "#003366";
+                        }else if(params.value >=199 && params.value<=299 ){
+                          return "#26C0C0";
+                        }
+                        return "#9BCA63";
+                      }
+                    }
+                  },
+                data: [120, 200, 90, 80, 70, 270, 130],
+                type: 'bar',
+                showBackground: true,
+                backgroundStyle: {
+                    color: 'rgba(220, 220, 220, 0.8)'
+                }
+            }]
+        };
+        myChart.setOption(option1);
+	
+	var myChart = echarts.init(document.getElementById('heat'));
+        var days = ['7/14', '7/15', '7/16', '7/17', '7/18', '7/20', '7/21']
+        var hours = ['00:00', '01:00', '02:00', '03:00', "04:00", '05:00','06:00', '07:00', '08:00', '09:00', '10:00',
+					'10:00', '11:00', '12:00', '13:00', "14:00", '15:00','16:00', '17:00', '18:00', '19:00', '20:00',
+					'21:00', '22:00', '23:00'
+		]
+        //var data = [[0, 0, 40], [0, 1, 105], [1, 1, 205]]
+        var data = [[0,0,5],[0,1,1],[0,2,0],[0,3,0],[0,4,0],[0,5,0],[0,6,0],[0,7,0],[0,8,0],[0,9,0],[0,10,0],[0,11,2],[0,12,4],[0,13,1],[0,14,1],[0,15,3],[0,16,4],[0,17,6],[0,18,4],[0,19,4],[0,20,3],[0,21,3],[0,22,2],[0,23,5],[1,0,7],[1,1,0],[1,2,0],[1,3,0],[1,4,0],[1,5,0],[1,6,0],[1,7,0],[1,8,0],[1,9,0],[1,10,5],[1,11,2],[1,12,2],[1,13,6],[1,14,9],[1,15,11],[1,16,6],[1,17,7],[1,18,8],[1,19,12],[1,20,5],[1,21,5],[1,22,7],[1,23,2],[2,0,1],[2,1,1],[2,2,0],[2,3,0],[2,4,0],[2,5,0],[2,6,0],[2,7,0],[2,8,0],[2,9,0],[2,10,3],[2,11,2],[2,12,1],[2,13,9],[2,14,8],[2,15,10],[2,16,6],[2,17,5],[2,18,5],[2,19,5],[2,20,7],[2,21,4],[2,22,2],[2,23,4],[3,0,7],[3,1,3],[3,2,0],[3,3,0],[3,4,0],[3,5,0],[3,6,0],[3,7,0],[3,8,1],[3,9,0],[3,10,5],[3,11,4],[3,12,7],[3,13,14],[3,14,13],[3,15,12],[3,16,9],[3,17,5],[3,18,5],[3,19,10],[3,20,6],[3,21,4],[3,22,4],[3,23,1],[4,0,1],[4,1,3],[4,2,0],[4,3,0],[4,4,0],[4,5,1],[4,6,0],[4,7,0],[4,8,0],[4,9,2],[4,10,4],[4,11,4],[4,12,2],[4,13,4],[4,14,4],[4,15,14],[4,16,12],[4,17,1],[4,18,8],[4,19,5],[4,20,3],[4,21,7],[4,22,3],[4,23,0],[5,0,2],[5,1,1],[5,2,0],[5,3,3],[5,4,0],[5,5,0],[5,6,0],[5,7,0],[5,8,2],[5,9,0],[5,10,4],[5,11,1],[5,12,5],[5,13,10],[5,14,5],[5,15,7],[5,16,11],[5,17,6],[5,18,0],[5,19,5],[5,20,3],[5,21,4],[5,22,2],[5,23,0],[6,0,1],[6,1,0],[6,2,0],[6,3,0],[6,4,0],[6,5,0],[6,6,0],[6,7,0],[6,8,0],[6,9,0],[6,10,1],[6,11,0],[6,12,2],[6,13,1],[6,14,3],[6,15,4],[6,16,0],[6,17,0],[6,18,0],[6,19,0],[6,20,1],[6,21,2],[6,22,2],[6,23,6]];
+
+        var option2 = {
+            visualMap: {
+                min: 0,
+                max: 10,
+                calculable: true,
+                orient: 'verticle',
+                left: 'right',
+				top:'70px',
+                bottom: '15%',
+            },
+            grid:{
+                height: '50%',
+                top:'10%'
+            },
+            dataZoom:[
+                /*
+                {
+                    type:'slider',
+                    xAxisIndex: 0,
+                },
+                */
+                {
+                    type:'slider',
+                    yAxisIndex:[0],
+					left:'left'
+                }
+            ],
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b0}<br />{c0}'
+            },
+            xAxis: {
+                type: 'category',
+                data:hours,
+                splitArea: {
+                    show: true
+                }
+            },
+            yAxis: {
+                type: 'category',
+                data: days,
+                splitArea: {
+                    show: true
+                }
+            },
+            series: [{
+                type: 'heatmap',
+                data: data,
+                label: {
+                    show: true
+                },
+                backgroundStyle: {
+                    color: 'rgba(220, 220, 220, 0.8)'
+                }
+            }]
+        };
+        
+        myChart.setOption(option2);
+
+</script>
+</body>
+</html>
